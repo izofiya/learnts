@@ -1,52 +1,20 @@
-let arr = [1, 2, 3].includes(1)
-
-/* let/const **/
-let period = 50;
-const baseUrl = 'http://example.com';
-
-/* object **/
-let firstName = 'Zoya';
-let account = {
-    firstName,
-    getName() {
-        return this.firstName
-    }
-};
-
-/* spread **/
-let person = {...account};
-let dates = [...[11, 12, 13]];
-
-/* destructor **/
-let {firstName: myName} = person;
-let [firstDate] = dates;
-
-/* template string **/
-function userMessage([start, end]: TemplateStringsArray, {firstName: name}: typeof person): string {
-    return `${start}${name}${end}`
-}
-console.log(userMessage`Good Day, ${person} !!`);
-
-/* for of **/
-for (const date of dates) {
-    console.log(date)
+function sleep(ms: number) {
+    return new Promise((resolve) => {
+setTimeout(resolve, ms)
+    });
 }
 
-/* arrow **/
-let sum = (a: number, b: number) => a + b;
+async function* getItemsReallySlowly<T>(items: Iterable<T>): AsyncIterableIterator<T> {
+for(const item of items) {
+    await sleep(1000);
+    yield item;
+}
+}
 
-/* Class **/
-class Point {
-    public x = 10;
-    sum() {
-        return this.x;
+async function speakLikeSloth(items: string[]) {
+    for await (const item of getItemsReallySlowly(items)) {
+        console.log(item)
     }
 }
 
-/* Optional chaining **/
-const user: any = {};
-let x = user?.info?.baz();
-
-/* ?? **/
-let admin;
-let a = admin ?? user;
+speakLikeSloth(['hi', 'all', '!', 'I', 'love', 'TS']);
